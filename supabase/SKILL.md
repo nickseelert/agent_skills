@@ -11,7 +11,14 @@ Interact with Supabase projects using the Supabase CLI. This skill provides all 
 
 ## Configuration File
 
-Create a `.supabase-skill.json` file to set defaults for your project. The skill reads from:
+Create a `.supabase-skill.json` file to set defaults for your project. Copy from the example template:
+
+```bash
+cp templates/supabase-skill.example.json .supabase-skill.json
+# Edit with your actual values
+```
+
+The skill reads from:
 1. `~/.supabase-skill.json` (user global defaults)
 2. `./.supabase-skill.json` (project-specific, overrides global)
 
