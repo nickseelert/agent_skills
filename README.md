@@ -2,114 +2,131 @@
 
 A collection of curated skills for AI coding agents. Skills provide agents with specialized knowledge and tools to work effectively with specific technologies.
 
-## What are Skills?
-
-Skills are structured knowledge packages that help AI coding agents understand and interact with specific tools, services, and frameworks. Each skill includes:
-
-- **Documentation** - Comprehensive guides and reference material
-- **Helper Scripts** - Ready-to-use automation scripts
-- **Templates** - Starter code and configuration files
-- **Quick References** - Condensed command cheat sheets
+This repository follows the [Agent Skills standard](https://agentskills.io/specification).
 
 ## Available Skills
 
 | Skill | Description |
 |-------|-------------|
-| [Supabase](./supabase/) | Interact with Supabase projects via CLI - database operations, migrations, Edge Functions, storage, and more |
+| [supabase](./supabase/) | Interact with Supabase projects via CLI - database operations, migrations, Edge Functions, storage, and more |
 
-## Getting Started
+## Installation
 
-### Using Skills with AI Agents
+Skills need to be installed in a location where your AI coding agent can discover them.
 
-Skills are designed to be loaded by AI coding agents that support external knowledge bases. Each skill's `SKILL.md` file contains the primary documentation in a format optimized for AI consumption.
+### For pi (pi-coding-agent)
 
-### Manual Use
-
-You can also use the helper scripts and templates directly:
+**Option 1: Symlink entire repository (recommended)**
 
 ```bash
-# Example: Use Supabase skill scripts
-cd supabase/scripts
-./list-tables.sh
-./quick-query.sh tables
+# Clone the repository
+git clone https://github.com/yourusername/agent_skills.git ~/.pi/agent/skills/agent_skills
+
+# Or symlink if you already have it cloned elsewhere
+ln -s /path/to/agent_skills ~/.pi/agent/skills/agent_skills
 ```
 
-## Skill Structure
+Pi recursively searches `~/.pi/agent/skills/**/SKILL.md`, so all skills in this repo will be discovered.
 
-Each skill follows a consistent structure:
+**Option 2: Symlink individual skills**
 
+```bash
+# Symlink just the supabase skill
+ln -s /path/to/agent_skills/supabase ~/.pi/agent/skills/supabase
 ```
-skill-name/
-├── SKILL.md              # Main skill documentation (AI-optimized)
-├── scripts/              # Executable helper scripts
-│   └── *.sh
-├── templates/            # Starter templates and configs
-│   └── *.json, *.sql, *.ts
-└── references/           # Quick reference guides
-    └── *.md
+
+**Option 3: Project-local skills**
+
+```bash
+# For project-specific use
+ln -s /path/to/agent_skills/supabase .pi/skills/supabase
 ```
+
+### For Claude Code
+
+```bash
+# User-level skills
+ln -s /path/to/agent_skills/supabase ~/.claude/skills/supabase
+
+# Or project-level
+ln -s /path/to/agent_skills/supabase .claude/skills/supabase
+```
+
+### For Codex CLI
+
+```bash
+ln -s /path/to/agent_skills ~/.codex/skills/agent_skills
+```
+
+## Configuration
+
+Some skills require configuration files with secrets (API keys, passwords, etc.). These follow the pattern `.<skill-name>-skill.json` and are gitignored.
+
+```bash
+# Copy the example config
+cp supabase/templates/supabase-skill.example.json .supabase-skill.json
+
+# Edit with your actual values
+# The config can be placed in:
+#   ~/.supabase-skill.json     (user global)
+#   ./.supabase-skill.json     (project-specific, overrides global)
+```
+
+## What are Skills?
+
+Skills are self-contained capability packages that AI coding agents load on-demand. When the agent encounters a task matching a skill's description, it loads the skill documentation and gains access to specialized workflows, setup instructions, helper scripts, and reference material.
+
+Each skill includes:
+
+- **SKILL.md** - Primary documentation with frontmatter metadata
+- **scripts/** - Executable helper scripts
+- **templates/** - Starter code and configuration files  
+- **references/** - Quick reference guides
 
 ### SKILL.md Format
-
-The `SKILL.md` file includes YAML frontmatter with metadata:
 
 ```yaml
 ---
 name: skill-name
-description: Brief description of what the skill enables
+description: When to use this skill (max 1024 chars, used for matching)
 license: MIT
 compatibility: Requirements and prerequisites
 ---
+
+# Skill Name
+
+Full documentation follows...
+```
+
+The `name` field must match the parent directory name.
+
+## Manual Usage
+
+You can also use the helper scripts and templates directly without an AI agent:
+
+```bash
+# Use Supabase skill scripts
+./supabase/scripts/list-tables.sh
+./supabase/scripts/quick-query.sh tables
+./supabase/scripts/execute-sql.sh "SELECT * FROM users LIMIT 5"
 ```
 
 ## Contributing
 
 ### Adding a New Skill
 
-1. Create a new directory with the skill name
-2. Add a `SKILL.md` file with comprehensive documentation
+1. Create a directory matching the skill name (lowercase, hyphens, max 64 chars)
+2. Add a `SKILL.md` file with required frontmatter (`name`, `description`)
 3. Include helper scripts in `scripts/`
-4. Add useful templates in `templates/`
-5. Create quick reference guides in `references/`
+4. Add templates in `templates/` (use `.example.json` for configs with secrets)
+5. Add quick reference guides in `references/`
 
 ### Skill Guidelines
 
 - **Self-contained** - Each skill should work independently
 - **Comprehensive** - Cover the most common use cases
 - **Practical** - Include working examples and scripts
-- **Well-documented** - Clear explanations for both humans and AI agents
-
-## Supabase Skill Highlights
-
-The Supabase skill provides:
-
-- **Database Operations** - Execute SQL, manage schemas, inspect tables
-- **Migrations** - Create, apply, and manage database migrations
-- **Edge Functions** - Deploy and manage serverless functions
-- **Type Generation** - Generate TypeScript types from your schema
-- **Local Development** - Full local stack with Docker
-- **Helper Scripts** - Automation for common tasks
-
-### Quick Start with Supabase
-
-```bash
-# 1. Install Supabase CLI
-npm install -g supabase
-
-# 2. Initialize project
-supabase init
-supabase start
-
-# 3. Configure the skill
-cp supabase/templates/supabase-skill.example.json .supabase-skill.json
-# Edit .supabase-skill.json with your project details
-
-# 4. Use helper scripts
-./supabase/scripts/list-tables.sh
-./supabase/scripts/quick-query.sh tables
-```
-
-See [supabase/SKILL.md](./supabase/SKILL.md) for full documentation.
+- **Secure** - Never commit secrets; use `.example` config templates
 
 ## License
 
