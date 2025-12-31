@@ -1,0 +1,9 @@
+{
+  "project-ref": "your-project-ref-here",
+  "access-token": "",
+  "db-password": "",
+  "db-url": "",
+  "default-target": "local",
+  "default-schema": "public",
+  "org-id": ""
+}
