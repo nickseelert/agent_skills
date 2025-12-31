@@ -2,7 +2,7 @@
 name: supabase
 description: Interact with Supabase projects via the Supabase CLI. Manage databases, run SQL queries, handle migrations, deploy Edge Functions, manage storage, and work with branching. Use when the user mentions Supabase, needs database operations, wants to deploy serverless functions, or work with Postgres databases hosted on Supabase.
 license: MIT
-compatibility: Requires Supabase CLI installed (npm i -g supabase or brew install supabase/tap/supabase). Requires Docker for local development. Network access needed for remote operations.
+compatibility: Requires Supabase CLI installed (npm i supabase --save-dev or brew install supabase/tap/supabase). Global npm install not supported. Requires Docker for local development. Network access needed for remote operations.
 ---
 
 # Supabase
@@ -24,8 +24,9 @@ export SUPABASE_PROJECT_REF="your-project-ref"
 ## Setup
 
 ```bash
-# Install CLI
-npm install -g supabase
+# Install CLI (as dev dependency - global install not supported)
+npm i supabase --save-dev
+# Or via Homebrew: brew install supabase/tap/supabase
 
 # Login (opens browser)
 supabase login

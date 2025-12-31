@@ -80,7 +80,15 @@ For local development with Docker, you don't need any config - just run `supabas
 
 ## Prerequisites
 
-- **Supabase CLI**: Install via `npm install -g supabase` or `brew install supabase/tap/supabase`
+- **Supabase CLI**: Install as a dev dependency in your project:
+  ```bash
+  npm i supabase --save-dev
+  ```
+  Or via Homebrew (macOS/Linux):
+  ```bash
+  brew install supabase/tap/supabase
+  ```
+  **Note**: Global npm install (`npm i -g supabase`) is not supported.
 - **Docker**: Required for local development (`supabase start`)
 - **Network access**: Required for remote operations
 
