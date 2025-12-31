@@ -1,9 +1,9 @@
 {
-  "project-ref": "your-project-ref-here",
-  "access-token": "sbp_your-access-token",
-  "db-password": "your-db-password",
+  "project-ref": "abcdefghijklmnop",
+  "access-token": "sbp_1234567890abcdef1234567890abcdef12345678",
+  "db-password": "",
   "db-url": "",
   "default-target": "local",
   "default-schema": "public",
-  "org-id": "your-org-id"
+  "org-id": ""
 }

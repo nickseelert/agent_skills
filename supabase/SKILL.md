@@ -11,37 +11,65 @@ Interact with Supabase projects using the Supabase CLI. This skill provides all 
 
 ## Configuration File
 
-Create a `.supabase-skill.json` file to set defaults for your project. Copy from the example template:
+Create a `.supabase-skill.json` file to configure access to your Supabase project.
+
+### Quick Setup
 
 ```bash
-cp templates/supabase-skill.example.json .supabase-skill.json
-# Edit with your actual values
+# Option 1: Global config (for all projects using the same Supabase account)
+cp /path/to/agent_skills/supabase/templates/supabase-skill.example.json ~/.supabase-skill.json
+
+# Option 2: Project-specific config (in your project root)
+cp /path/to/agent_skills/supabase/templates/supabase-skill.example.json ./.supabase-skill.json
 ```
 
-The skill reads from:
-1. `~/.supabase-skill.json` (user global defaults)
-2. `./.supabase-skill.json` (project-specific, overrides global)
+Then edit the file with your actual values (see below for where to find them).
+
+### Example Config
 
 ```json
 {
-  "project-ref": "your-project-ref-here",
-  "access-token": "sbp_xxxxx",
-  "db-password": "your-db-password",
+  "project-ref": "abcdefghijklmnop",
+  "access-token": "sbp_1234567890abcdef...",
+  "db-password": "your-database-password",
   "default-target": "local",
-  "default-schema": "public",
-  "org-id": "your-org-id"
+  "default-schema": "public"
 }
 ```
 
-| Field | Description |
-|-------|-------------|
-| `project-ref` | Your Supabase project ID (from Dashboard > Settings > General) |
-| `access-token` | Personal access token (from Dashboard > Account > Access Tokens) |
-| `db-password` | Database password for the project |
-| `db-url` | Full database connection URL (overrides project-ref for DB ops) |
-| `default-target` | Default target: `local` or `linked` (default: `local`) |
-| `default-schema` | Default schema for queries (default: `public`) |
-| `org-id` | Organization ID for creating new projects |
+### Where to Find Each Value
+
+| Field | Required? | Where to Find It |
+|-------|-----------|------------------|
+| `project-ref` | Yes (for remote ops) | Supabase Dashboard → Project Settings → General → "Reference ID" (looks like `abcdefghijklmnop`) |
+| `access-token` | Yes (for remote ops) | Supabase Dashboard → Account (top right) → Access Tokens → Generate New Token (starts with `sbp_`) |
+| `db-password` | Optional | The password you set when creating the project, or reset in Dashboard → Project Settings → Database → Database Password |
+| `db-url` | Optional | Full postgres connection string. If set, overrides `project-ref` for database operations. Find in Dashboard → Project Settings → Database → Connection string |
+| `default-target` | Optional | `local` (default) or `linked`. Controls whether scripts target local Docker or remote by default |
+| `default-schema` | Optional | `public` (default). The schema to use for table listings and queries |
+| `org-id` | Optional | Only needed for creating new projects. Dashboard → Organization Settings → General → Organization ID |
+
+### Minimal Config for Remote Operations
+
+If you just want to query your remote Supabase database:
+
+```json
+{
+  "project-ref": "your-project-ref",
+  "access-token": "sbp_your-access-token"
+}
+```
+
+### Minimal Config for Local Development
+
+For local development with Docker, you don't need any config - just run `supabase start`. But you can set defaults:
+
+```json
+{
+  "default-target": "local",
+  "default-schema": "public"
+}
+```
 
 **Security Note:** Add `.supabase-skill.json` to your `.gitignore` to avoid committing secrets.
 
