@@ -60,17 +60,25 @@ ln -s /path/to/agent_skills ~/.codex/skills/agent_skills
 
 ## Configuration
 
-Some skills require configuration files with secrets (API keys, passwords, etc.). These follow the pattern `.<skill-name>-skill.json` and are gitignored.
+Some skills require configuration files with secrets (API keys, passwords, etc.). These follow the pattern `.<skill-name>-skill.json`.
+
+Config files can be placed in two locations:
+- **User global**: `~/.<skill-name>-skill.json` - applies to all projects
+- **Project-specific**: `./<skill-name>-skill.json` - in your project root, overrides global
+
+Example for Supabase:
 
 ```bash
-# Copy the example config
-cp supabase/templates/supabase-skill.example.json .supabase-skill.json
+# Option 1: Global config (applies to all your projects)
+cp /path/to/agent_skills/supabase/templates/supabase-skill.example.json ~/.supabase-skill.json
 
-# Edit with your actual values
-# The config can be placed in:
-#   ~/.supabase-skill.json     (user global)
-#   ./.supabase-skill.json     (project-specific, overrides global)
+# Option 2: Project-specific config (in your project directory)
+cp /path/to/agent_skills/supabase/templates/supabase-skill.example.json ./.supabase-skill.json
+
+# Then edit the file with your actual values
 ```
+
+**Note**: These config files contain secrets and should never be committed. Add `.<skill-name>-skill.json` to your `.gitignore`.
 
 ## What are Skills?
 
